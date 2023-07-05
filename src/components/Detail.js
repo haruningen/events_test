@@ -12,6 +12,7 @@ const {Header, Content} = Layout;
 
 const Detail = () => {
     const [event, setEvent] = useState(null);
+    const [disabled, setDisabled] = useState(false);
     const [showQR, setShowQR] = useState(false);
     const params = useParams();
     const navigate = useNavigate()
@@ -20,6 +21,9 @@ const Detail = () => {
     useEffect(() => {
         const token = getTokenFromLocalStorage();
         api.getEventDetail(token, params.id).then((result) => {
+            const now = new Date()
+            const end = new Date(result.data.end)
+            setDisabled(now > end)
             setEvent(result.data);
         })
             .catch((error) => console.log(error));
@@ -79,10 +83,10 @@ const Detail = () => {
                 width: "auto",
                 textAlign: "right",
             }}>
-                {!event?.want_go && <Button onClick={attendEvent} type="primary" size='large'>
+                {!event?.want_go && <Button disabled={disabled} onClick={attendEvent} type="primary" size='large'>
                     Want to go
                 </Button>}
-                {event?.want_go && <Button onClick={attendEvent} size='large'>
+                {event?.want_go && <Button disabled={disabled} onClick={attendEvent} size='large'>
                     Don't want to go
                 </Button>}
             </div>
@@ -97,7 +101,7 @@ const Detail = () => {
                 <br/>
                 {event?.end && <Text>End at {formatDate(event?.end)}</Text>}
                 <br/><br/>
-                {!showQR && <Button type="primary" size='large' onClick={changeQR}>
+                {!showQR && <Button type="primary" size='large' disabled={disabled} onClick={changeQR}>
                     Get QR
                 </Button>}
                 {showQR && <Button type="dashed" size='large' onClick={changeQR}>
