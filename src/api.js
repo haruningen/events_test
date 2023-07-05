@@ -20,6 +20,14 @@ export default {
                 password
             }
         }),
+    verifyEmail: (email_verified_hash) =>
+        axios({
+            method: 'post',
+            url: API_ROUTES.VERIFY_EMAIL,
+            data: {
+                email_verified_hash,
+            }
+        }),
     getEvents: (token) =>
         axios({
             method: 'GET',
