@@ -36,4 +36,28 @@ export default {
                 Authorization: `Bearer ${token}`,
             }
         }),
+    getEventDetail: (token, id) =>
+        axios({
+            method: 'GET',
+            url: API_ROUTES.GET_EVENTS + `${id}/`,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        }),
+    getUser: (token) =>
+        axios({
+            method: 'GET',
+            url: API_ROUTES.GET_USER,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        }),
+    attendEvent: (token, id) =>
+        axios({
+            method: 'POST',
+            url: `${API_ROUTES.ATTEND_EVENT}${id}/attend/`,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        }),
 }

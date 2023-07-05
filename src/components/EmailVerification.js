@@ -10,7 +10,6 @@ const EmailVerification = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        console.log('params', params)
         api.verifyEmail(params.token).then((result) => {
             if (result.data.status === 'success') {
                 setValid(1)

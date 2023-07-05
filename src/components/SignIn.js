@@ -29,7 +29,7 @@ const SignIn = () => {
                 return;
             }
             storeTokenInLocalStorage(response.data.tokens.access);
-            navigate(APP_ROUTES.DASHBOARD)
+            navigate(APP_ROUTES.HOME)
         } catch (err) {
             console.log('Some error occured during signing in: ', err);
         } finally {
