@@ -2,13 +2,14 @@ import axios from 'axios'
 import {API_ROUTES} from "./utils/constants";
 
 export default {
-    signUp: (email, password) =>
+    signUp: (email, password, confirm_password) =>
         axios({
             method: 'POST',
             url: API_ROUTES.SIGN_UP,
             data: {
                 email,
                 password,
+                confirm_password,
             }
         }),
     signIn: (email, password) =>
@@ -20,13 +21,27 @@ export default {
                 password
             }
         }),
+    requestResetPassword: (email) =>
+        axios({
+            method: 'post',
+            url: API_ROUTES.REQUEST_RESET_PASSWORD,
+            data: {email}
+        }),
+    confirmResetPassword: (password_reset_hash, new_password, re_new_password) =>
+        axios({
+            method: 'post',
+            url: API_ROUTES.RESET_PASSWORD,
+            data: {
+                password_reset_hash,
+                new_password,
+                re_new_password
+            }
+        }),
     verifyEmail: (email_verified_hash) =>
         axios({
             method: 'post',
             url: API_ROUTES.VERIFY_EMAIL,
-            data: {
-                email_verified_hash,
-            }
+            data: {email_verified_hash}
         }),
     getEvents: (token) =>
         axios({

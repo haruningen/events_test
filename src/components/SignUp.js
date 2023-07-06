@@ -10,13 +10,14 @@ const SignUp = () => {
     const navigate = useNavigate()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirm, setConfirm] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
 
     const signUp = async () => {
         try {
             setIsLoading(true);
-            const response = await api.signUp(email, password)
+            const response = await api.signUp(email, password, confirm)
             if (!response?.data?.token) {
                 console.log('Something went wrong during signing up: ', response);
                 return;
@@ -109,7 +110,11 @@ const SignUp = () => {
                     }),
                 ]}
             >
-                <Input.Password/>
+                <Input.Password
+                    value={confirm}
+                    onChange={(e) => {
+                        setConfirm(e.target.value);
+                    }}/>
             </Form.Item>
 
             <Form.Item>
