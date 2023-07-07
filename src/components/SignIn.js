@@ -3,7 +3,7 @@ import {useState} from 'react';
 import {APP_ROUTES} from '../utils/constants';
 import {Link, useNavigate} from 'react-router-dom';
 import {useUser} from '../lib/customHooks';
-import {storeTokenInLocalStorage} from '../lib/common';
+import {storeTokensInLocalStorage} from '../lib/common';
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import {Button, Form, Input} from 'antd';
 import api from "../api";
@@ -28,7 +28,7 @@ const SignIn = () => {
                 console.log('Something went wrong during signing in: ', response);
                 return;
             }
-            storeTokenInLocalStorage(response.data.tokens.access);
+            storeTokensInLocalStorage(response.data.tokens.access, response.data.tokens.refresh);
             navigate(APP_ROUTES.HOME)
         } catch (err) {
             console.log('Some error occured during signing in: ', err);

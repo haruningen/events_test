@@ -43,6 +43,15 @@ export default {
             url: API_ROUTES.VERIFY_EMAIL,
             data: {email_verified_hash}
         }),
+    logout: (token, refresh) =>
+        axios({
+            method: 'post',
+            url: API_ROUTES.LOGOUT,
+            data: {refresh},
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        }),
     loadAvatar: (token, formData) =>
         axios({
             method: 'put',

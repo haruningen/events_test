@@ -1,5 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {getTokenFromLocalStorage} from "../lib/common";
+import {
+    getRefreshTokenFromLocalStorage,
+    getTokenFromLocalStorage,
+    removeTokensFromLocalStorage
+} from "../lib/common";
 import api from "../api";
 import {Avatar, Button, Upload, Layout, Typography, message, Card, List} from "antd";
 import {UploadOutlined, UserOutlined} from "@ant-design/icons";
@@ -44,6 +48,18 @@ const Profile = () => {
         } else {
             message.error('upload failed.');
             setUploading(false);
+        }
+    };
+
+    const logout = async () => {
+        const token = getTokenFromLocalStorage();
+        const refresh = getRefreshTokenFromLocalStorage();
+        const response = await api.logout(token, refresh)
+        if (response?.status === 205) {
+            removeTokensFromLocalStorage()
+            navigate('/signin')
+        } else {
+            message.error('logout error.');
         }
     };
 
@@ -96,6 +112,11 @@ const Profile = () => {
                 width: "auto",
                 textAlign: "left",
             }}>
+                <Button
+                    type="primary"
+                    onClick={logout}>
+                    Logout
+                </Button>
                 <Title level={5}>My events</Title>
             </div>
             <br/>

@@ -1,15 +1,26 @@
-import { API_ROUTES } from '../utils/constants';
+import {API_ROUTES} from '../utils/constants';
 import axios from 'axios';
-export function storeTokenInLocalStorage(token) {
+
+export function storeTokensInLocalStorage(token, refresh) {
     localStorage.setItem('token', token);
+    localStorage.setItem('refresh', refresh);
 }
 
 export function getTokenFromLocalStorage() {
     return localStorage.getItem('token');
 }
 
+export function getRefreshTokenFromLocalStorage() {
+    return localStorage.getItem('refresh');
+}
+
+export function removeTokensFromLocalStorage() {
+    return localStorage.removeItem('token');
+    return localStorage.removeItem('refresh');
+}
+
 export async function getAuthenticatedUser() {
-    const defaultReturnObject = { authenticated: false, user: null };
+    const defaultReturnObject = {authenticated: false, user: null};
     try {
         const token = getTokenFromLocalStorage();
         if (!token) {
@@ -22,10 +33,9 @@ export async function getAuthenticatedUser() {
                 Authorization: `Bearer ${token}`,
             }
         });
-        const { authenticated = false } = response.data;
+        const {authenticated = false} = response.data;
         return authenticated ? response.data : false;
-    }
-    catch (err) {
+    } catch (err) {
         console.log('getAuthenticatedUser, Something Went Wrong', err);
         return defaultReturnObject;
     }
