@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Card, List, Layout, Button, Tooltip,} from 'antd';
+import {Card, List, Layout, Button, Tooltip, Typography,} from 'antd';
 import {getTokenFromLocalStorage} from "../lib/common";
 import api from "../api";
 import {useNavigate} from "react-router-dom";
 import {UserOutlined} from "@ant-design/icons";
 
 const {Header, Content} = Layout;
+const {Paragraph} = Typography;
 
 const Home = () => {
     const [events, setEvents] = useState([]);
@@ -70,7 +71,9 @@ const Home = () => {
                                     title={<a href={item.href}>{item.name}</a>}
                                     description={item.description}
                                 />
-                                {item.summary}
+                                <Paragraph ellipsis={{rows: 2, expandable: true, symbol: 'more'}}>
+                                    {item.summary}
+                                </Paragraph>
                             </Card>
                         </List.Item>
                     )}
