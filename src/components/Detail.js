@@ -22,8 +22,12 @@ const Detail = () => {
         const token = getTokenFromLocalStorage();
         api.getEventDetail(token, params.id).then((result) => {
             const now = new Date()
-            const end = new Date(result.data.end)
-            setDisabled(now > end)
+            if (result?.data?.end) {
+                const end = new Date(result.data.end)
+                setDisabled(now > end)
+            } else {
+                setDisabled(false)
+            }
             setEvent(result.data);
         })
             .catch((error) => console.log(error));

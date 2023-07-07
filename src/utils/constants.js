@@ -6,7 +6,9 @@ export const API_ROUTES = {
     REQUEST_RESET_PASSWORD: `${API_URL}/api/auth/reset_password/`,
     RESET_PASSWORD: `${API_URL}/api/auth/reset_password_confirm/`,
     VERIFY_EMAIL: `${API_URL}/api/users/validate-email-token/`,
+    LOAD_AVATAR: `${API_URL}/api/users/load-avatar/`,
     GET_USER: `${API_URL}/api/users/me/`,
+    GET_USER_EVENTS: `${API_URL}/api/events/my/`,
     GET_EVENTS: `${API_URL}/api/events/`,
     ATTEND_EVENT: `${API_URL}/api/events/`,
 }

@@ -43,6 +43,16 @@ export default {
             url: API_ROUTES.VERIFY_EMAIL,
             data: {email_verified_hash}
         }),
+    loadAvatar: (token, formData) =>
+        axios({
+            method: 'put',
+            url: API_ROUTES.LOAD_AVATAR,
+            data: formData,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
+            }
+        }),
     getEvents: (token) =>
         axios({
             method: 'GET',
@@ -63,6 +73,14 @@ export default {
         axios({
             method: 'GET',
             url: API_ROUTES.GET_USER,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        }),
+    getUserEvents: (token) =>
+        axios({
+            method: 'GET',
+            url: API_ROUTES.GET_USER_EVENTS,
             headers: {
                 Authorization: `Bearer ${token}`,
             }
