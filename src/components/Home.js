@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Card, List, Layout, Button, Tooltip, Typography,} from 'antd';
-import {getTokenFromLocalStorage} from "../lib/common";
+import {Card, List, Layout, Button, Tooltip, Typography, Pagination,} from 'antd';
+import {getTokenFromLocalStorage, removeTokensFromLocalStorage} from "../lib/common";
 import api from "../api";
 import {useNavigate} from "react-router-dom";
 import {UserOutlined} from "@ant-design/icons";
@@ -10,12 +10,16 @@ const {Paragraph} = Typography;
 
 const Home = () => {
     const [events, setEvents] = useState([]);
+    const [page, setPage] = useState(0);
+    const [totalPage, setTotalPage] = useState(0);
     const navigate = useNavigate()
+    const perPage = 20
 
     useEffect(() => {
-        const token = getTokenFromLocalStorage();
-        api.getEvents(token).then((result) => {
-            setEvents(result.data);
+        api.getEvents().then((result) => {
+            setEvents(result.data.items);
+            setPage(page + 1);
+            setTotalPage(result.data.count / perPage);
         })
             .catch((error) => console.log(error));
     }, []);
@@ -25,7 +29,14 @@ const Home = () => {
         navigate(`/event/${id}`)
     }
 
-    const goToProfile = () => navigate('/profile')
+    const goToProfile = () => {
+        const token = getTokenFromLocalStorage();
+        if (token) {
+            navigate('/profile')
+        } else {
+            navigate('/signin')
+        }
+    }
 
     return (
         <Layout>
@@ -66,7 +77,7 @@ const Home = () => {
                                 data-id={item.id}
                                 hoverable
                                 style={{width: 240}}
-                                cover={<img alt="example" src={item.image_url}/>}>
+                                cover={item.image_url && <img alt="example" src={item.image_url}/>}>
                                 <List.Item.Meta
                                     title={<a href={item.href}>{item.name}</a>}
                                     description={item.description}
@@ -77,7 +88,9 @@ const Home = () => {
                             </Card>
                         </List.Item>
                     )}
-                /></Content>
+                />
+                <Pagination defaultCurrent={page} total={totalPage} />;
+            </Content>
         </Layout>
     );
 }

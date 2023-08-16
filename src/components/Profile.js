@@ -26,7 +26,7 @@ const Profile = () => {
         })
             .catch((error) => console.log(error));
         api.getUserEvents(token).then((result) => {
-            setEvents(result.data);
+            setEvents(result.data.items);
         })
             .catch((error) => console.log(error));
     }, []);
@@ -34,7 +34,7 @@ const Profile = () => {
     const handleUpload = async () => {
         const formData = new FormData();
         fileList.forEach((file) => {
-            formData.append('avatar_url', file);
+            formData.append('image', file);
         });
         setUploading(true);
         const token = getTokenFromLocalStorage();

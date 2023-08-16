@@ -2,14 +2,14 @@ import axios from 'axios'
 import {API_ROUTES} from "./utils/constants";
 
 export default {
-    signUp: (email, password, confirm_password) =>
+    signUp: (email, password, password_confirm) =>
         axios({
             method: 'POST',
             url: API_ROUTES.SIGN_UP,
             data: {
                 email,
                 password,
-                confirm_password,
+                password_confirm,
             }
         }),
     signIn: (email, password) =>
@@ -54,7 +54,7 @@ export default {
         }),
     loadAvatar: (token, formData) =>
         axios({
-            method: 'put',
+            method: 'post',
             url: API_ROUTES.LOAD_AVATAR,
             data: formData,
             headers: {
@@ -70,13 +70,18 @@ export default {
                 Authorization: `Bearer ${token}`,
             }
         }),
-    getEventDetail: (token, id) =>
+    getEventDetailAuth: (token, id) =>
         axios({
             method: 'GET',
             url: API_ROUTES.GET_EVENTS + `${id}/`,
             headers: {
                 Authorization: `Bearer ${token}`,
             }
+        }),
+    getEventDetail: (id) =>
+        axios({
+            method: 'GET',
+            url: API_ROUTES.GET_EVENTS + `${id}/`,
         }),
     getUser: (token) =>
         axios({

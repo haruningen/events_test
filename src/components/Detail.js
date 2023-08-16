@@ -20,17 +20,31 @@ const Detail = () => {
 
     useEffect(() => {
         const token = getTokenFromLocalStorage();
-        api.getEventDetail(token, params.id).then((result) => {
-            const now = new Date()
-            if (result?.data?.end) {
-                const end = new Date(result.data.end)
-                setDisabled(now > end)
-            } else {
-                setDisabled(false)
-            }
-            setEvent(result.data);
-        })
-            .catch((error) => console.log(error));
+        if (token) {
+            api.getEventDetailAuth(token, params.id).then((result) => {
+                const now = new Date()
+                if (result?.data?.end) {
+                    const end = new Date(result.data.end)
+                    setDisabled(now > end)
+                } else {
+                    setDisabled(false)
+                }
+                setEvent(result.data);
+            })
+                .catch((error) => console.log(error));
+        } else {
+            api.getEventDetail(params.id).then((result) => {
+                const now = new Date()
+                if (result?.data?.end) {
+                    const end = new Date(result.data.end)
+                    setDisabled(now > end)
+                } else {
+                    setDisabled(false)
+                }
+                setEvent(result.data);
+            })
+                .catch((error) => console.log(error));
+        }
     }, []);
 
     const attendEvent = () => {
@@ -43,7 +57,14 @@ const Detail = () => {
             .catch((error) => console.log(error));
     }
 
-    const goToProfile = () => navigate('/profile')
+    const goToProfile = () => {
+        const token = getTokenFromLocalStorage();
+        if (token) {
+            navigate('/profile')
+        } else {
+            navigate('/signin')
+        }
+    }
     const changeQR = () => setShowQR(!showQR)
 
     const formatDate = (dateString) => {
@@ -83,7 +104,7 @@ const Detail = () => {
         }}>
             <Image style={{maxHeight: 430}} src={event?.image_url}/>
             <br/><br/>
-            <div style={{
+            {event?.want_go != null && <div style={{
                 width: "auto",
                 textAlign: "right",
             }}>
@@ -94,6 +115,7 @@ const Detail = () => {
                     Don't want to go
                 </Button>}
             </div>
+            }
             <Title level={3}>{event?.name}</Title>
             <div style={{
                 width: "auto",

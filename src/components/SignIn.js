@@ -24,11 +24,11 @@ const SignIn = () => {
         try {
             setIsLoading(true);
             const response = await api.signIn(email, password)
-            if (!response?.data?.tokens) {
+            if (!response?.data) {
                 console.log('Something went wrong during signing in: ', response);
                 return;
             }
-            storeTokensInLocalStorage(response.data.tokens.access, response.data.tokens.refresh);
+            storeTokensInLocalStorage(response.data.access_token, response.data.refresh_token);
             navigate(APP_ROUTES.HOME)
         } catch (err) {
             console.log('Some error occured during signing in: ', err);
