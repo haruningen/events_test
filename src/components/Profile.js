@@ -1,28 +1,40 @@
 import React, {useEffect, useState} from "react";
 import {
-    getRefreshTokenFromLocalStorage,
     getTokenFromLocalStorage,
     removeTokensFromLocalStorage
 } from "../lib/common";
 import api from "../api";
-import {Avatar, Button, Upload, Layout, Typography, message, Card, List} from "antd";
+import {Avatar, Button, Upload, Layout, Typography, message, Card, List, Switch, Modal, QRCode} from "antd";
 import {UploadOutlined, UserOutlined} from "@ant-design/icons";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
+import {APP_ROUTES} from "../utils/constants";
 
 const {Content} = Layout;
 const {Paragraph, Title} = Typography;
 
 const Profile = () => {
     const [user, setUser] = useState(null);
+    const [tfaEnabled, setTfaEnabled] = useState(false);
     const [events, setEvents] = useState([]);
     const [fileList, setFileList] = useState([]);
     const [uploading, setUploading] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [tfaUrl, setTFAUrl] = useState('');
+
     const navigate = useNavigate()
+    const {state} = useLocation();
+
 
     useEffect(() => {
         const token = getTokenFromLocalStorage();
+        if (state?.url) {
+            setTFAUrl(state?.url)
+            setTfaEnabled(true)
+            setIsModalOpen(true)
+        }
         api.getUser(token).then((result) => {
             setUser(result.data);
+            setTfaEnabled(result.data.tfa_enabled);
         })
             .catch((error) => console.log(error));
         api.getUserEvents(token).then((result) => {
@@ -74,8 +86,38 @@ const Profile = () => {
         const id = event.currentTarget.dataset.id
         navigate(`/event/${id}`)
     }
+    const onChange = async (checked) => {
+        setTfaEnabled(checked)
+        console.log(user.tfa_enabled, checked)
+        if (!user.tfa_enabled && checked) {
+            const token = getTokenFromLocalStorage();
+            const response = await api.tfaEnable(token)
+            if (!response?.data) {
+                console.log('Something went wrong during enable TFA in: ', response);
+                setTfaEnabled(false)
+            } else {
+                setTFAUrl(response?.data.otp_auth_url)
+                setIsModalOpen(true)
+            }
+        } else if (user.tfa_enabled && checked) {
+            navigate(APP_ROUTES.TFA_CODE, {state: {enable: true}})
+        } else if (user.tfa_enabled && !checked) {
+            navigate(APP_ROUTES.TFA_CODE, {state: {enable: false}})
+        }
+    };
+
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
 
     return (<Layout>
+        <Modal title="Auth QR-code" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+            <QRCode value={tfaUrl || '-'} />
+        </Modal>
         <Content style={{
             textAlign: "center",
             padding: 20,
@@ -101,6 +143,16 @@ const Profile = () => {
                 {uploading ? 'Uploading' : 'Start Upload'}
             </Button>
             <Title level={3}>{user?.email}</Title>
+            <div style={{
+                width: "auto",
+                textAlign: "left",
+                display: 'flex',
+                alignItems: 'center',
+                marginBottom: 20,
+            }}>
+                <Title style={{display: 'inline-block', margin: 0}} level={4}>Enable 2-Factor Auth</Title>
+                <Switch style={{display: 'inline-block', marginLeft: 20}} checked={tfaEnabled} onChange={onChange}/>
+            </div>
             <div style={{
                 width: "auto",
                 textAlign: "left",

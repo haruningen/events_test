@@ -30,6 +30,33 @@ export default {
                 otp_code
             }
         }),
+    tfaEnable: (token) =>
+        axios({
+            method: 'post',
+            url: API_ROUTES.ENABLE_OTP,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            data: {}
+        }),
+    tfaEnableWithCode: (token, otp_code) =>
+        axios({
+            method: 'post',
+            url: API_ROUTES.ENABLE_OTP,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            data: {otp_code}
+        }),
+    tfaDisable: (token, otp_code) =>
+        axios({
+            method: 'post',
+            url: API_ROUTES.DISABLE_OTP,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            data: {otp_code}
+        }),
     requestResetPassword: (email) =>
         axios({
             method: 'post',
@@ -51,15 +78,6 @@ export default {
             method: 'post',
             url: API_ROUTES.VERIFY_EMAIL,
             data: {email_verified_hash}
-        }),
-    logout: (token, refresh) =>
-        axios({
-            method: 'post',
-            url: API_ROUTES.LOGOUT,
-            data: {refresh},
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
         }),
     loadAvatar: (token, formData) =>
         axios({
@@ -111,7 +129,7 @@ export default {
     attendEvent: (token, id) =>
         axios({
             method: 'POST',
-            url: `${API_ROUTES.ATTEND_EVENT}${id}/attend/`,
+            url: `${API_ROUTES.ATTEND_EVENT}${id}`,
             headers: {
                 Authorization: `Bearer ${token}`,
             }
