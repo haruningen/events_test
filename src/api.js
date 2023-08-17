@@ -21,6 +21,15 @@ export default {
                 password
             }
         }),
+    tfaLogin: (email, otp_code) =>
+        axios({
+            method: 'post',
+            url: API_ROUTES.SIGN_IN_OTP,
+            data: {
+                email,
+                otp_code
+            }
+        }),
     requestResetPassword: (email) =>
         axios({
             method: 'post',

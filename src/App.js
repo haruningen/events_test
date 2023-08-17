@@ -8,6 +8,7 @@ import Detail from "./components/Detail";
 import Profile from "./components/Profile";
 import RequestResetPassword from "./components/RequestResetPassword";
 import ResetPassword from "./components/ResetPassword";
+import TFALogin from "./components/TFALogin";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path={APP_ROUTES.PROFILE} element={<Profile />} />
           <Route path={APP_ROUTES.REQUEST_RESET_PASSWORD} element={<RequestResetPassword />} />
           <Route path={APP_ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
+          <Route path={APP_ROUTES.TFA_LOGIN} element={<TFALogin />} />
         </Routes>
       </BrowserRouter>
   );

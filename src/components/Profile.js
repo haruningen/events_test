@@ -52,15 +52,8 @@ const Profile = () => {
     };
 
     const logout = async () => {
-        const token = getTokenFromLocalStorage();
-        const refresh = getRefreshTokenFromLocalStorage();
-        const response = await api.logout(token, refresh)
-        if (response?.status === 205) {
-            removeTokensFromLocalStorage()
-            navigate('/signin')
-        } else {
-            message.error('logout error.');
-        }
+        removeTokensFromLocalStorage()
+        navigate('/signin')
     };
 
     const props = {

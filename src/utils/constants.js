@@ -3,7 +3,7 @@ export const FRONTEND_URL = 'http://localhost:3000'
 export const API_ROUTES = {
     SIGN_UP: `${API_URL}/api/auth/signup`,
     SIGN_IN: `${API_URL}/api/auth/login`,
-    SIGN_IN_OTP: `${API_URL}/api/auth/login`,
+    SIGN_IN_OTP: `${API_URL}/api/auth/otp/login`,
     ENABLE_OTP: `${API_URL}/api/users/otp/enable`,
     DISABLE_OTP: `${API_URL}/api/users/otp/disable`,
     REQUEST_RESET_PASSWORD: `${API_URL}/api/auth/reset_password`,
@@ -20,6 +20,7 @@ export const API_ROUTES = {
 export const APP_ROUTES = {
     SIGN_UP: '/signup',
     SIGN_IN: '/signin',
+    TFA_LOGIN: '/tfa_login',
     HOME: '/home',
     VERIFY_EMAIL: '/email-verify/:token',
     DETAIL: '/event/:id',
