@@ -29,8 +29,7 @@ const SignIn = () => {
                 return;
             }
             if (response.data?.otp_required === true) {
-                console.log('otp_required', response.data)
-                navigate(APP_ROUTES.TFA_LOGIN, {state: {email: email}})
+                navigate(APP_ROUTES.TFA_LOGIN, {replace: true, state: {email: email}})
             } else {
                 console.log(response.data)
                 storeTokensInLocalStorage(response.data.access_token, response.data.refresh_token);

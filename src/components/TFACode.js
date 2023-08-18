@@ -2,8 +2,8 @@ import React from 'react';
 import {useState} from 'react';
 import {APP_ROUTES} from '../utils/constants';
 import {useLocation, useNavigate} from 'react-router-dom';
-import {getTokenFromLocalStorage, storeTokensInLocalStorage} from '../lib/common';
-import {Button, Form, Input, Modal, QRCode} from 'antd';
+import {getTokenFromLocalStorage} from '../lib/common';
+import {Button, Form, Input} from 'antd';
 import api from "../api";
 
 const TFACode = () => {

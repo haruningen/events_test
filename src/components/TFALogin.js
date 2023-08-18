@@ -24,14 +24,14 @@ const TFALogin = () => {
                 return;
             }
             storeTokensInLocalStorage(response.data.access_token, response.data.refresh_token);
-            navigate(APP_ROUTES.HOME)
+            navigate(APP_ROUTES.HOME, {replace: true})
         } catch (err) {
             console.log('Some error occured during signing in: ', err);
         }
     };
 
     const handleChange = (e) => {
-        const { value: inputValue } = e.target;
+        const {value: inputValue} = e.target;
         const reg = /^-?\d*(\.\d*)?$/;
         if (reg.test(inputValue) || inputValue === '' || inputValue === '-') {
             setCode(inputValue);
