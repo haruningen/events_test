@@ -4,7 +4,7 @@ Backend can be found [here](https://github.com/haruningen/events_fastAPI)
 
 ## Demo
 
-
+![](https://github.com/haruningen/events_test/blob/fastAPI/demo/site_demo.gif)
 
 ## Available Scripts
 
