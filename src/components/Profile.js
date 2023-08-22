@@ -89,7 +89,7 @@ const Profile = () => {
     const onChange = async (checked) => {
         setTfaEnabled(checked)
         console.log(user.tfa_enabled, checked)
-        if (!user.tfa_enabled && checked) {
+        if (!tfaEnabled && checked) {
             const token = getTokenFromLocalStorage();
             const response = await api.tfaEnable(token)
             if (!response?.data) {
@@ -99,9 +99,9 @@ const Profile = () => {
                 setTFAUrl(response?.data.otp_auth_url)
                 setIsModalOpen(true)
             }
-        } else if (user.tfa_enabled && checked) {
+        } else if (tfaEnabled && checked) {
             navigate(APP_ROUTES.TFA_CODE, {state: {enable: true}})
-        } else if (user.tfa_enabled && !checked) {
+        } else if (tfaEnabled && !checked) {
             navigate(APP_ROUTES.TFA_CODE, {state: {enable: false}})
         }
     };
@@ -183,7 +183,7 @@ const Profile = () => {
                             data-id={item.id}
                             hoverable
                             style={{width: 240}}
-                            cover={<img alt="example" src={item.image_url}/>}>
+                            cover={item.image_url && <img alt="example" src={item.image_url}/>}>
                             <List.Item.Meta
                                 title={<a href={item.href}>{item.name}</a>}
                                 description={item.description}
