@@ -1,6 +1,10 @@
 ## Frontend part for test project
 
-Backend can be found [here](https://github.com/higanbanawork/eventsTestProject)
+Backend can be found [here](https://github.com/haruningen/events_fastAPI)
+
+## Demo
+
+
 
 ## Available Scripts
 
